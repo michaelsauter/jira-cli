@@ -39,8 +39,14 @@ func realMain() {
 	case newCommand.FullCommand():
 		openEditor()
 		desc := readDescription()
+		project := *projectFlag
+		verboseMsg("Read project '" + project + "' from CLI")
+		if len(project) == 0 {
+			project = guessProject()
+		}
+		verboseMsg("Determined project '" + project + "'")
 
-		issue, _ := createIssue(readProject(), *newTitleArg, *newTypeFlag, desc)
+		issue, _ := createIssue(project, *newTitleArg, *newTypeFlag, desc)
 
 		branchName := issue.Key + "-" + strings.ToLower(*newTitleArg)
 		branchName = strings.Replace(branchName, " ", "-", -1)
@@ -50,8 +56,18 @@ func realMain() {
 	}
 }
 
+func isVerbose() bool {
+	return *verboseFlag
+}
+
+func verboseMsg(message string) {
+	if isVerbose() {
+		fmt.Printf("--> %s\n", message)
+	}
+}
+
 func openEditor() {
-	fmt.Println("opening editor")
+	verboseMsg("Opening editor")
 	cmd := exec.Command(config.Editor, ".JIRA_DESCRIPTION")
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
@@ -59,9 +75,9 @@ func openEditor() {
 }
 
 func readDescription() string {
-	fmt.Println("reading file")
+	verboseMsg("Reading file")
 	dat, _ := ioutil.ReadFile(".JIRA_DESCRIPTION")
-	fmt.Println("deleting file")
+	verboseMsg("Deleting file")
 	os.Remove(".JIRA_DESCRIPTION")
 	return string(dat)
 }

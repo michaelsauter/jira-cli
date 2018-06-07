@@ -60,7 +60,7 @@ func createIssue(project string, title string, issueType string, description str
 	b := new(bytes.Buffer)
 	json.NewEncoder(b).Encode(params)
 
-	fmt.Printf("%v\n", b)
+	verboseMsg(fmt.Sprintf("%v", b))
 
 	response := &CreateIssueResponseBody{}
 
@@ -74,11 +74,11 @@ func createIssue(project string, title string, issueType string, description str
 	res, err := client.Do(req)
 
 	if err == nil && res.StatusCode != 201 {
-		msg := fmt.Sprintf("Wrong status code %s", res.Status)
+		msg := fmt.Sprintf("ERROR! Wrong status code %s", res.Status)
 		err = errors.New(msg)
 	}
 	if err != nil {
-		fmt.Printf("Call failed: %s", err.Error())
+		fmt.Printf("ERROR! Creating issue failed: %s", err.Error())
 		return response, err
 	}
 
@@ -86,7 +86,7 @@ func createIssue(project string, title string, issueType string, description str
 
 	json.NewDecoder(res.Body).Decode(response)
 
-	fmt.Printf("Created %s/browse/%s\n", config.JiraHost, response.Key)
+	fmt.Printf("Created issue: %s/browse/%s\n", config.JiraHost, response.Key)
 
 	return response, err
 }

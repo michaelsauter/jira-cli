@@ -7,20 +7,26 @@ import (
 )
 
 func createBranch(branchName string) {
-	fmt.Println("creating branch")
+	verboseMsg("creating branch")
 	cmd := exec.Command("git", "checkout", "-b", branchName)
 	err := cmd.Run()
-	fmt.Println(err)
+	if err == nil {
+		fmt.Printf("Checked out branch: %s", branchName)
+	} else {
+		fmt.Println("ERROR! Branch could not be created.")
+	}
 }
 
 func pushBranch() {
-	fmt.Println("pushing branch")
+	verboseMsg("pushing branch")
 	cmd := exec.Command("git", "push")
 	err := cmd.Run()
-	fmt.Println(err)
+	if err != nil {
+		fmt.Println("ERROR! Branch could not be pushed.")
+	}
 }
 
-func readProject() string {
+func guessProject() string {
 	out, _ := exec.Command("git", "config", "remote.origin.url").Output()
 	repo := strings.Split(string(out), "/")
 	return strings.ToUpper(repo[len(repo)-2])
