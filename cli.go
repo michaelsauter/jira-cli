@@ -21,7 +21,7 @@ var (
 	newTypeFlag = newCommand.Flag(
 		"type",
 		"Issue type",
-	).Short('t').Default("Bug").String()
+	).Short('t').Default("Task").String()
 
 	newTitleArg = newCommand.Arg("title", "Title").String()
 )
