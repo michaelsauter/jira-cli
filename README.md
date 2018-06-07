@@ -5,7 +5,7 @@ A CLI tool to work with JIRA.
 
 # What it does
 
-Given a config file in your home directory and information taken from the Git repository in which the CLI is run, it allows to create issue from the command line, create a new branch for it and switch to it in your local repository. 
+Given a config file in your home directory and information taken from the Git repository in which the CLI is run, it allows to create a new issue from the command line, create a branch for it and switch to it in your local repository.
 
 # Usage
 
