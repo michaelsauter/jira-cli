@@ -36,8 +36,8 @@ func checkConfig(filename string) error {
 
 // Determine config base path.
 // On windows, this is %APPDATA%\\jira\\config.json
-// On unix, this is ${XDG_CONFIG_HOME}/jira/config.json (which usually
-// is ${HOME}/.config/jira/config.json)
+// On unix, this is ${XDG_CONFIG_HOME}/jira-cli/config.json (which usually
+// is ${HOME}/.config/jira-cli/config.json)
 func configFile() (string, error) {
 	configPath := ""
 	configFile := os.Getenv("JIRA_CONFIG_PATH")
@@ -47,17 +47,17 @@ func configFile() (string, error) {
 	if runtime.GOOS == "windows" {
 		configPath = os.Getenv("APPDATA")
 		if len(configPath) > 0 {
-			return fmt.Sprintf("%s/jira/config.json", configPath), nil
+			return fmt.Sprintf("%s/jira-cli/config.json", configPath), nil
 		}
 		return "", errors.New("Cannot detect config file!")
 	}
 	configPath = os.Getenv("XDG_CONFIG_HOME")
 	if len(configPath) > 0 {
-		return fmt.Sprintf("%s/jira/config.json", configPath), nil
+		return fmt.Sprintf("%s/jira-cli/config.json", configPath), nil
 	}
 	homeDir := os.Getenv("HOME")
 	if len(homeDir) > 0 {
-		return fmt.Sprintf("%s/.config/jira/config.json", homeDir), nil
+		return fmt.Sprintf("%s/.config/jira-cli/config.json", homeDir), nil
 	}
 	return "", errors.New("Cannot detect config file!")
 }
